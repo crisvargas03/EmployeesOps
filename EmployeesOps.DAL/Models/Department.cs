@@ -5,6 +5,6 @@
         public string Name { get; set; } = string.Empty;
 
         // Navigation Prop
-        public ICollection<Employee> Employees { get; set; }
+        public ICollection<Employee>? Employees { get; set; }
     }
 }
