@@ -1,4 +1,6 @@
-﻿using EmployeesOps.BLL.Interfaces;
+﻿using AutoMapper;
+using EmployeesOps.BLL.Dtos;
+using EmployeesOps.BLL.Interfaces;
 using EmployeesOps.DAL.Repository.IRepositories;
 using EmployeesOps.DAL.Utils;
 using System.Net;
@@ -8,11 +10,13 @@ namespace EmployeesOps.BLL.Services
     public class EmployeeService : IEmployeeService
     {
         private readonly IEmployeeInterface _repository;
-        private APIResponse _response;
+        private readonly IMapper _mapper;
+        protected APIResponse _response;
 
-        public EmployeeService(IEmployeeInterface repository)
+        public EmployeeService(IEmployeeInterface repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
             _response = new();
         }
 
@@ -21,11 +25,7 @@ namespace EmployeesOps.BLL.Services
             try
             {
                 var employees = await _repository.GetAllFromSpAsync();
-
-                // TODO: Make automapper Dto
-                _response.StatusCode = HttpStatusCode.OK;
-                _response.IsSuccess = true;
-                _response.Payload = employees;
+                _response.Payload = _mapper.Map<List<EmployeeDto>>(employees);
 
                 return _response;
             }
@@ -47,8 +47,7 @@ namespace EmployeesOps.BLL.Services
                     return _response;
                 }
 
-                _response.StatusCode = HttpStatusCode.OK;
-                _response.Payload = employee;
+                _response.Payload = _mapper.Map<EmployeeDto>(employee);
                 return _response;
             }
             catch (Exception ex)

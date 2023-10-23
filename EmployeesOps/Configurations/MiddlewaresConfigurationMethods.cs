@@ -1,9 +1,11 @@
 ﻿using EmployeesOps.BLL.Interfaces;
+using EmployeesOps.BLL.Mapper;
 using EmployeesOps.BLL.Services;
 using EmployeesOps.DAL;
 using EmployeesOps.DAL.Repository;
 using EmployeesOps.DAL.Repository.IRepositories;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 namespace EmployeesOps.Configurations
 {
@@ -36,12 +38,18 @@ namespace EmployeesOps.Configurations
             services.AddScoped<IDepartmentInterface, DepartmentRepository>();
         }
 
+        public static void ConfigurateAutoMapper(this IServiceCollection services) 
+        {
+            services.AddAutoMapper(typeof(MappingConfiguration));
+        }
+
         public static void PrepereConfigurations(this IServiceCollection services, IConfiguration configuration)
         {
             services.ConfigurateDbContext(configuration);
             services.ConfigurateCors();
             services.ConfigurateRepositories();
             services.ConfigurateServices();
+            services.ConfigurateAutoMapper();
         }
     }
 }

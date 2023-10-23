@@ -7,6 +7,8 @@ namespace EmployeesOps.DAL.Utils
         public APIResponse()
         {
             ErrorMessages = new List<string>();
+            IsSuccess = true;
+            StatusCode = HttpStatusCode.OK;
         }
         public HttpStatusCode StatusCode { get; set; }
         public bool IsSuccess { get; set; } = true;
