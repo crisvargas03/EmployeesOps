@@ -12,7 +12,7 @@
         public int DepartmentId { get; set; }
 
         // Navigation Prop
-        public Department? Department { get; set; }
-        public IdentificationType? IdentificationType { get; set; }
+        public virtual Department? Department { get; set; }
+        public virtual IdentificationType? IdentificationType { get; set; }
     }
 }
