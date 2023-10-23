@@ -19,7 +19,7 @@ namespace EmployeesOps.DAL.FluentConfiguration
 
             builder.HasMany(x => x.Employees)
                 .WithOne(x => x.IdentificationType)
-                .HasForeignKey(x => x.DepartmentId)
+                .HasForeignKey(x => x.IdentificationTypeId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasData(

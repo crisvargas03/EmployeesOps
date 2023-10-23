@@ -32,5 +32,23 @@ namespace EmployeesOps.DAL.Repository
 
             return result.FirstOrDefault()!;
         }
+
+        public async Task<int> ExecuteInsertSpAsync(Employee employee)
+        {
+            var affectedRows = await _mainDbContext.Database.ExecuteSqlInterpolatedAsync($@"InsertEmployee
+            @Id={employee.Id},
+            @Names={employee.Names},
+            @LastNames={employee.LastNames},
+            @IdentificationNumber={employee.IdentificationNumber},
+            @BirthDate={employee.BirthDate},
+            @EntryDate={employee.EntryDate},
+            @Salary={employee.Salary},
+            @IdentificationTypeId={employee.IdentificationTypeId},
+            @DepartmentId={employee.DepartmentId},
+            @CreatedBy={employee.CreatedBy},
+            @CreationDate={employee.CreationDate}");
+
+            return affectedRows;
+        }
     }
 }

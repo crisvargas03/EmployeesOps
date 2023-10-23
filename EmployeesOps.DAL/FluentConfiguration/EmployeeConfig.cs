@@ -10,7 +10,7 @@ namespace EmployeesOps.DAL.FluentConfiguration
         {
             builder.HasKey(x => x.Id);
             builder.HasQueryFilter(x => !x.IsDeleted);
-            builder.Property(x => x.Id).HasDefaultValueSql("NEWSEQUENTIALID()");
+            builder.Property(x => x.Id).IsRequired();
 
             builder.Property(x => x.CreatedBy).IsRequired().HasMaxLength(50);
             builder.Property(x => x.IsDeleted).IsRequired();

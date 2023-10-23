@@ -4,6 +4,7 @@ using EmployeesOps.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmployeesOps.DAL.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    partial class MainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231023032510_FixRelationShip")]
+    partial class FixRelationShip
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,7 +64,7 @@ namespace EmployeesOps.DAL.Migrations
                         {
                             Id = 1001,
                             CreatedBy = "Dataseed",
-                            CreationDate = new DateTime(2023, 10, 22, 23, 37, 50, 242, DateTimeKind.Local).AddTicks(7737),
+                            CreationDate = new DateTime(2023, 10, 22, 23, 25, 10, 200, DateTimeKind.Local).AddTicks(3388),
                             IsDeleted = false,
                             Name = "IT Department"
                         },
@@ -69,7 +72,7 @@ namespace EmployeesOps.DAL.Migrations
                         {
                             Id = 1002,
                             CreatedBy = "Dataseed",
-                            CreationDate = new DateTime(2023, 10, 22, 23, 37, 50, 242, DateTimeKind.Local).AddTicks(7748),
+                            CreationDate = new DateTime(2023, 10, 22, 23, 25, 10, 200, DateTimeKind.Local).AddTicks(3398),
                             IsDeleted = false,
                             Name = "Sales Department"
                         },
@@ -77,7 +80,7 @@ namespace EmployeesOps.DAL.Migrations
                         {
                             Id = 1003,
                             CreatedBy = "Dataseed",
-                            CreationDate = new DateTime(2023, 10, 22, 23, 37, 50, 242, DateTimeKind.Local).AddTicks(7749),
+                            CreationDate = new DateTime(2023, 10, 22, 23, 25, 10, 200, DateTimeKind.Local).AddTicks(3399),
                             IsDeleted = false,
                             Name = "HHRR Department"
                         });
@@ -87,7 +90,8 @@ namespace EmployeesOps.DAL.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWSEQUENTIALID()");
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
@@ -184,7 +188,7 @@ namespace EmployeesOps.DAL.Migrations
                         {
                             Id = 1,
                             CreatedBy = "Dataseed",
-                            CreationDate = new DateTime(2023, 10, 22, 23, 37, 50, 242, DateTimeKind.Local).AddTicks(8325),
+                            CreationDate = new DateTime(2023, 10, 22, 23, 25, 10, 200, DateTimeKind.Local).AddTicks(3980),
                             Description = "Cedula",
                             IsDeleted = false
                         },
@@ -192,7 +196,7 @@ namespace EmployeesOps.DAL.Migrations
                         {
                             Id = 2,
                             CreatedBy = "Dataseed",
-                            CreationDate = new DateTime(2023, 10, 22, 23, 37, 50, 242, DateTimeKind.Local).AddTicks(8327),
+                            CreationDate = new DateTime(2023, 10, 22, 23, 25, 10, 200, DateTimeKind.Local).AddTicks(3981),
                             Description = "SocialId",
                             IsDeleted = false
                         },
@@ -200,7 +204,7 @@ namespace EmployeesOps.DAL.Migrations
                         {
                             Id = 3,
                             CreatedBy = "Dataseed",
-                            CreationDate = new DateTime(2023, 10, 22, 23, 37, 50, 242, DateTimeKind.Local).AddTicks(8328),
+                            CreationDate = new DateTime(2023, 10, 22, 23, 25, 10, 200, DateTimeKind.Local).AddTicks(3982),
                             Description = "Passport",
                             IsDeleted = false
                         });

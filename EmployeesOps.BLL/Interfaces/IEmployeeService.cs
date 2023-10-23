@@ -1,4 +1,5 @@
-﻿using EmployeesOps.DAL.Utils;
+﻿using EmployeesOps.BLL.Dtos;
+using EmployeesOps.DAL.Utils;
 
 namespace EmployeesOps.BLL.Interfaces
 {
@@ -6,5 +7,6 @@ namespace EmployeesOps.BLL.Interfaces
     {
         Task<APIResponse> GetAllAsync();
         Task<APIResponse> GetByIdAsync(Guid id);
+        Task<APIResponse> InsertAsync(EmployeeInsertDto employeeInsert);
     }
 }

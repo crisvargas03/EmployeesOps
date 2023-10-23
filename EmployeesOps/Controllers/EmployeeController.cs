@@ -1,4 +1,5 @@
-﻿using EmployeesOps.BLL.Interfaces;
+﻿using EmployeesOps.BLL.Dtos;
+using EmployeesOps.BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -30,6 +31,17 @@ namespace EmployeesOps.Controllers
                 { IsSuccess: true } => Ok(result),
                 { StatusCode: HttpStatusCode.NotFound } => NotFound(result),
                 _ => BadRequest(result),
+            };
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] EmployeeInsertDto employeeInsert)
+        {
+            var result = await _employeeService.InsertAsync(employeeInsert);
+            return result switch
+            {
+                { IsSuccess: true } => Ok(result),
+                _ => BadRequest(result)
             };
         }
     }
