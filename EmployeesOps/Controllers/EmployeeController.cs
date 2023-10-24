@@ -44,5 +44,29 @@ namespace EmployeesOps.Controllers
                 _ => BadRequest(result)
             };
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Edit(Guid id, [FromBody] EmployeeUpdateDto employeeUpdate)
+        {
+            var result = await _employeeService.UpdateAsync(id, employeeUpdate);
+            return result switch
+            {
+                { IsSuccess: true } => Ok(result),
+                { StatusCode: HttpStatusCode.NotFound } => NotFound(result),
+                _ => BadRequest(result)
+            };
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var result = await _employeeService.DeleteAsync(id);
+            return result switch
+            {
+                { IsSuccess: true } => Ok(result),
+                { StatusCode: HttpStatusCode.NotFound } => NotFound(result),
+                _ => BadRequest(result)
+            };
+        }
     }
 }

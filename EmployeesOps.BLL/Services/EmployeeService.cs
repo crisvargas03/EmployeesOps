@@ -71,8 +71,6 @@ namespace EmployeesOps.BLL.Services
 
                 var employeeModel = _mapper.Map<Employee>(employeeInsert);
                 employeeModel.Id = Guid.NewGuid();
-                employeeModel.CreationDate = DateTime.Now;
-                employeeModel.CreatedBy = "By User";
 
                 var result = await _repository.ExecuteInsertSpAsync(employeeModel);
                 if (result >= 1) 
@@ -82,14 +80,78 @@ namespace EmployeesOps.BLL.Services
                 }
                 else
                 {
-                    _response.FailedResponse(HttpStatusCode.BadRequest, "Error Creating User...");
+                    _response.FailedResponse(HttpStatusCode.BadRequest, "Error Creating Employee...");
                     return _response;
                 }
             }
             catch (Exception ex)
             {
                 _response.FailedResponse(HttpStatusCode.InternalServerError, ex.Message);
-                return _response; ;
+                return _response;
+            }
+        }
+
+        public async Task<APIResponse> UpdateAsync(Guid id, EmployeeUpdateDto employeeUpdate)
+        {
+            try
+            {
+                if (employeeUpdate is null || id != employeeUpdate.Id)
+                {
+                    _response.FailedResponse(HttpStatusCode.BadRequest, "Incorrect Information...");
+                    return _response;
+                }
+                var employeeToUpdate = await _repository.GetAsync(x => x.Id == id);
+                if (employeeToUpdate is null)
+                {
+                    _response.FailedResponse(HttpStatusCode.NotFound, "Employee was not found");
+                    return _response;
+                }
+
+                _mapper.Map(employeeUpdate, employeeToUpdate);
+                employeeToUpdate.ModificationDate = DateTime.Now;
+                employeeToUpdate.ModificationBy = "By User";
+
+                var result = await _repository.ExecuteUpdateSpAsync(employeeToUpdate);
+                if (result >= 1)
+                {
+                    _response.Payload = _mapper.Map<EmployeeDto>(employeeToUpdate);
+                    return _response;
+                }
+                else
+                {
+                    _response.FailedResponse(HttpStatusCode.BadRequest, "Error Editing Employee...");
+                    return _response;
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.FailedResponse(HttpStatusCode.InternalServerError, ex.Message);
+                return _response;
+            }
+        }
+
+        public async Task<APIResponse> DeleteAsync(Guid id)
+        {
+            try
+            {
+                var exits = await _repository.GetAsync(x => x.Id == id);
+                if (exits is null)
+                {
+                    _response.FailedResponse(HttpStatusCode.NotFound, "Employee was not found");
+                    return _response;
+                }
+                var result = await _repository.ExecuteDeleteSpAsync(id);
+                if (result >= 1) return _response;
+                else
+                {
+                    _response.FailedResponse(HttpStatusCode.BadRequest, "Error Deleting Employee...");
+                    return _response;
+                }
+            }
+            catch (Exception ex)
+            {
+                _response.FailedResponse(HttpStatusCode.InternalServerError, ex.Message);
+                return _response;
             }
         }
 

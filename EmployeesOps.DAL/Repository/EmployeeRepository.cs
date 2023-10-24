@@ -50,5 +50,31 @@ namespace EmployeesOps.DAL.Repository
 
             return affectedRows;
         }
+
+        public async Task<int> ExecuteUpdateSpAsync(Employee employee)
+        {
+            var affectedRows = await _mainDbContext.Database.ExecuteSqlInterpolatedAsync($@"UpdateEmployee
+            @Id={employee.Id},
+            @Names={employee.Names},
+            @LastNames={employee.LastNames},
+            @IdentificationNumber={employee.IdentificationNumber},
+            @BirthDate={employee.BirthDate},
+            @EntryDate={employee.EntryDate},
+            @Salary={employee.Salary},
+            @IdentificationTypeId={employee.IdentificationTypeId},
+            @DepartmentId={employee.DepartmentId},
+            @ModificationBy={employee.ModificationBy},
+            @ModificationDate={employee.ModificationDate}");
+
+            return affectedRows;
+        }
+
+        public async Task<int> ExecuteDeleteSpAsync(Guid id)
+        {
+            var affectedRows = await _mainDbContext.Database.ExecuteSqlInterpolatedAsync($@"DeleteEmployee 
+            @EmployeeId={id}");
+
+            return affectedRows;
+        }
     }
 }
