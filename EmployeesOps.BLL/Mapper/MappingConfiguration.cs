@@ -11,6 +11,10 @@ namespace EmployeesOps.BLL.Mapper
             CreateMap<Employee, EmployeeDto>().ReverseMap();
             CreateMap<Employee, EmployeeInsertDto>().ReverseMap();
             CreateMap<Employee, EmployeeUpdateDto>().ReverseMap();
+
+            CreateMap<Department, DeparmentDto>().ReverseMap();
+
+            CreateMap<IdentificationType, IdentificationTypeDto>().ReverseMap();
         }
     }
 }

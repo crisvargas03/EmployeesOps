@@ -1,11 +1,6 @@
 ﻿using EmployeesOps.DAL.Models;
 using EmployeesOps.DAL.Repository.Core;
 using EmployeesOps.DAL.Repository.IRepositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmployeesOps.DAL.Repository
 {

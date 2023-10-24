@@ -30,12 +30,15 @@ namespace EmployeesOps.Configurations
         public static void ConfigurateServices(this IServiceCollection services)
         {
             services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddScoped<IDeparmentService, DepartmentService>();
+            services.AddScoped<IIdentificationTypeService, IdentificationTypeService>();
         }
 
         public static void ConfigurateRepositories(this IServiceCollection services)
         {
             services.AddScoped<IEmployeeInterface, EmployeeRepository>();
             services.AddScoped<IDepartmentInterface, DepartmentRepository>();
+            services.AddScoped<IIdentificationTypeInterface, IdentificationTypeRepository>();
         }
 
         public static void ConfigurateAutoMapper(this IServiceCollection services) 

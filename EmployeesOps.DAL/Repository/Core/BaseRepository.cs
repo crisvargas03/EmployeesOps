@@ -21,9 +21,13 @@ namespace EmployeesOps.DAL.Repository.Core
             return entity;
         }
 
-        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null)
+        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, bool tracked = true)
         {
             IQueryable<T> query = DbSet;
+            if (!tracked)
+            {
+                query = query.AsNoTracking();
+            }
             if (filter != null)
             {
                 query = query.Where(filter);
