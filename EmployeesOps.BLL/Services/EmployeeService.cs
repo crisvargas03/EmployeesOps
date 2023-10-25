@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using EmployeesOps.BLL.Dtos;
+using EmployeesOps.BLL.Helpers;
 using EmployeesOps.BLL.Interfaces;
 using EmployeesOps.DAL.Models;
 using EmployeesOps.DAL.Repository.IRepositories;
 using EmployeesOps.DAL.Utils;
+using FluentValidation;
 using System.Net;
 
 namespace EmployeesOps.BLL.Services
@@ -12,13 +14,20 @@ namespace EmployeesOps.BLL.Services
     {
         private readonly IEmployeeInterface _repository;
         private readonly IMapper _mapper;
+        private readonly IValidator<EmployeeInsertDto> _validatorInsert;
+        private readonly IValidator<EmployeeUpdateDto> _validatorUpdate;
         protected APIResponse _response;
 
-        public EmployeeService(IEmployeeInterface repository, IMapper mapper)
+        public EmployeeService(IEmployeeInterface repository, 
+            IMapper mapper, 
+            IValidator<EmployeeInsertDto> validatorInsert, 
+            IValidator<EmployeeUpdateDto> validatorUpdate)
         {
             _repository = repository;
             _mapper = mapper;
             _response = new();
+            _validatorInsert = validatorInsert;
+            _validatorUpdate = validatorUpdate;
         }
 
         public async Task<APIResponse> GetAllAsync()
@@ -32,8 +41,7 @@ namespace EmployeesOps.BLL.Services
             }
             catch (Exception ex)
             {
-                _response.FailedResponse(HttpStatusCode.InternalServerError, ex.Message);
-                return _response;
+                return _response.FailedResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -44,8 +52,7 @@ namespace EmployeesOps.BLL.Services
                 var employee = await _repository.GetByIdFromSpAsync(id);
                 if (employee is null) 
                 {
-                    _response.FailedResponse(HttpStatusCode.NotFound, "Not Found...");
-                    return _response;
+                    return _response.FailedResponse(HttpStatusCode.NotFound, "Not Found...");
                 }
 
                 _response.Payload = _mapper.Map<EmployeeDto>(employee);
@@ -53,22 +60,27 @@ namespace EmployeesOps.BLL.Services
             }
             catch (Exception ex)
             {
-                _response.FailedResponse(HttpStatusCode.InternalServerError, ex.Message);
-                return _response;
+                return _response.FailedResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
         public async Task<APIResponse> InsertAsync(EmployeeInsertDto employeeInsert)
         {
+            if (await IdentificationNumberExits(employeeInsert.IdentificationNumber))
+            {                
+                return _response.FailedResponse(HttpStatusCode.BadRequest, "The identification number already exists.");
+            }
+
+            var validationResult = _validatorInsert.Validate(employeeInsert);
+            if (!validationResult.IsValid)
+            {
+                _response.FailedResponse(HttpStatusCode.BadRequest, "Validation error.");
+                _response.Payload = new { validationResult.Errors };
+                return _response;
+            }
+
             try
             {
-                var exits = await IdentificationNumberExits(employeeInsert!.IdentificationNumber);
-                if (employeeInsert is null || exits)
-                {
-                    _response.FailedResponse(HttpStatusCode.BadRequest, "Incorrect Information...");
-                    return _response;
-                }
-
                 var employeeModel = _mapper.Map<Employee>(employeeInsert);
                 employeeModel.Id = Guid.NewGuid();
 
@@ -80,7 +92,7 @@ namespace EmployeesOps.BLL.Services
                 }
                 else
                 {
-                    _response.FailedResponse(HttpStatusCode.BadRequest, "Error Creating Employee...");
+                    _response.FailedResponse(HttpStatusCode.BadRequest, "Error creating employee.");
                     return _response;
                 }
             }
@@ -93,24 +105,30 @@ namespace EmployeesOps.BLL.Services
 
         public async Task<APIResponse> UpdateAsync(Guid id, EmployeeUpdateDto employeeUpdate)
         {
+            if (employeeUpdate is null || id != employeeUpdate.Id)
+            {
+                return _response.FailedResponse(HttpStatusCode.BadRequest, "Incorrect Information");
+            }
+
+            var employeeToUpdate = await _repository.GetAsync(x => x.Id == id);
+            if (employeeToUpdate is null)
+            {
+                return _response.FailedResponse(HttpStatusCode.NotFound, "Employee was not found");
+            }
+
+            var validationResult = _validatorUpdate.Validate(employeeUpdate);
+            if (!validationResult.IsValid) 
+            {
+                _response.FailedResponse(HttpStatusCode.BadRequest, "Validation error.");
+                _response.Payload = new { validationResult.Errors };
+                return _response;
+            }
+
+            _mapper.Map(employeeUpdate, employeeToUpdate);
+            employeeToUpdate.ModificationDate = DateTime.Now;
+            employeeToUpdate.ModificationBy = "By User";
             try
             {
-                if (employeeUpdate is null || id != employeeUpdate.Id)
-                {
-                    _response.FailedResponse(HttpStatusCode.BadRequest, "Incorrect Information...");
-                    return _response;
-                }
-                var employeeToUpdate = await _repository.GetAsync(x => x.Id == id);
-                if (employeeToUpdate is null)
-                {
-                    _response.FailedResponse(HttpStatusCode.NotFound, "Employee was not found");
-                    return _response;
-                }
-
-                _mapper.Map(employeeUpdate, employeeToUpdate);
-                employeeToUpdate.ModificationDate = DateTime.Now;
-                employeeToUpdate.ModificationBy = "By User";
-
                 var result = await _repository.ExecuteUpdateSpAsync(employeeToUpdate);
                 if (result >= 1)
                 {
@@ -119,7 +137,7 @@ namespace EmployeesOps.BLL.Services
                 }
                 else
                 {
-                    _response.FailedResponse(HttpStatusCode.BadRequest, "Error Editing Employee...");
+                    _response.FailedResponse(HttpStatusCode.BadRequest, "Error Editing Employee");
                     return _response;
                 }
             }
@@ -132,33 +150,29 @@ namespace EmployeesOps.BLL.Services
 
         public async Task<APIResponse> DeleteAsync(Guid id)
         {
+            var exits = await _repository.GetAsync(x => x.Id == id, tracked: false);
+            if (exits is null)
+            {
+                return _response.FailedResponse(HttpStatusCode.NotFound, "Employee was not found");
+            }
             try
             {
-                var exits = await _repository.GetAsync(x => x.Id == id);
-                if (exits is null)
-                {
-                    _response.FailedResponse(HttpStatusCode.NotFound, "Employee was not found");
-                    return _response;
-                }
                 var result = await _repository.ExecuteDeleteSpAsync(id);
                 if (result >= 1) return _response;
                 else
                 {
-                    _response.FailedResponse(HttpStatusCode.BadRequest, "Error Deleting Employee...");
-                    return _response;
+                    return _response.FailedResponse(HttpStatusCode.BadRequest, "Error Deleting Employee");
                 }
             }
             catch (Exception ex)
             {
-                _response.FailedResponse(HttpStatusCode.InternalServerError, ex.Message);
-                return _response;
+                return _response.FailedResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
         private async Task<bool> IdentificationNumberExits(string identificationNumber)
         {
             var result = await _repository.GetAsync(x => x.IdentificationNumber == identificationNumber, tracked: false);
-            
             if (result is not null) return true;
             return false;
         }

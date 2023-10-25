@@ -16,12 +16,14 @@ namespace EmployeesOps.DAL.Utils
         public object? Payload { get; set; }
 
 
-        public void FailedResponse(HttpStatusCode statusCode, string error)
+        public APIResponse FailedResponse(HttpStatusCode statusCode, string error)
         {
             this.StatusCode = statusCode;
             this.Payload = null;
             this.IsSuccess = false;
             this.ErrorMessages!.Add(error);
+
+            return this;
         }
     }
 }

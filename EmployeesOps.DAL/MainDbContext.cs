@@ -1,6 +1,7 @@
 ﻿using EmployeesOps.DAL.FluentConfiguration;
 using EmployeesOps.DAL.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace EmployeesOps.DAL
 {
@@ -18,9 +19,16 @@ namespace EmployeesOps.DAL
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfiguration(new EmployeeConfig());
-            modelBuilder.ApplyConfiguration(new DepartmentConfig());
-            modelBuilder.ApplyConfiguration(new IdentificationTypeConfig());
+            var assembly = Assembly.GetExecutingAssembly();
+            var entitiesConfigs = assembly.GetTypes()
+                .Where(t => t.Namespace == "EmployeesOps.DAL.FluentConfiguration" && 
+                typeof(IEntityTypeConfiguration<>).IsAssignableFrom(t));
+
+            foreach (var entityConfig in entitiesConfigs)
+            {
+                dynamic configurationInstance = Activator.CreateInstance(entityConfig)!;
+                modelBuilder.ApplyConfiguration(configurationInstance);
+            }
         }
     }
 }

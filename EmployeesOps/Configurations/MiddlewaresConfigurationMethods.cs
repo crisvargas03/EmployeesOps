@@ -1,11 +1,15 @@
-﻿using EmployeesOps.BLL.Interfaces;
+﻿using EmployeesOps.BLL.Dtos;
+using EmployeesOps.BLL.Interfaces;
 using EmployeesOps.BLL.Mapper;
 using EmployeesOps.BLL.Services;
+using EmployeesOps.BLL.Validators;
 using EmployeesOps.DAL;
 using EmployeesOps.DAL.Repository;
 using EmployeesOps.DAL.Repository.IRepositories;
+using EmployeesOps.DAL.Utils;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace EmployeesOps.Configurations
 {
@@ -46,13 +50,20 @@ namespace EmployeesOps.Configurations
             services.AddAutoMapper(typeof(MappingConfiguration));
         }
 
+        public static void ConfigurateValidator(this IServiceCollection services)
+        {
+            services.AddScoped<IValidator<EmployeeInsertDto>, EmployeesInsertValidator>();
+            services.AddScoped<IValidator<EmployeeUpdateDto>, EmployeesUpdateValidator>();
+        }
+
         public static void PrepereConfigurations(this IServiceCollection services, IConfiguration configuration)
         {
             services.ConfigurateDbContext(configuration);
-            services.ConfigurateCors();
             services.ConfigurateRepositories();
-            services.ConfigurateServices();
             services.ConfigurateAutoMapper();
+            services.ConfigurateValidator();
+            services.ConfigurateServices();
+            services.ConfigurateCors();
         }
     }
 }
