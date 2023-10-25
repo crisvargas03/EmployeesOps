@@ -16,6 +16,7 @@ namespace EmployeesOps.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Get()
         {
             var result = await _employeeService.GetAllAsync();
@@ -23,6 +24,9 @@ namespace EmployeesOps.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetById(Guid id)
         {
             var result = await _employeeService.GetByIdAsync(id);
@@ -35,6 +39,8 @@ namespace EmployeesOps.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromBody] EmployeeInsertDto employeeInsert)
         {
             var result = await _employeeService.InsertAsync(employeeInsert);
@@ -46,6 +52,9 @@ namespace EmployeesOps.Controllers
         }
 
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Edit(Guid id, [FromBody] EmployeeUpdateDto employeeUpdate)
         {
             var result = await _employeeService.UpdateAsync(id, employeeUpdate);
@@ -58,6 +67,9 @@ namespace EmployeesOps.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete(Guid id)
         {
             var result = await _employeeService.DeleteAsync(id);

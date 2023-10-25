@@ -6,6 +6,7 @@ using EmployeesOps.DAL.Models;
 using EmployeesOps.DAL.Repository.IRepositories;
 using EmployeesOps.DAL.Utils;
 using FluentValidation;
+using System;
 using System.Net;
 
 namespace EmployeesOps.BLL.Services
@@ -79,6 +80,12 @@ namespace EmployeesOps.BLL.Services
                 return _response;
             }
 
+            if (!await _repository.ExistDepartment(employeeInsert.DepartmentId) || 
+                !await _repository.ExistIdentificationType(employeeInsert.IdentificationTypeId))
+            {
+                return _response.FailedResponse(HttpStatusCode.BadRequest, "Department or IdentificationType does not exist.");
+            }
+
             try
             {
                 var employeeModel = _mapper.Map<Employee>(employeeInsert);
@@ -122,6 +129,12 @@ namespace EmployeesOps.BLL.Services
                 _response.FailedResponse(HttpStatusCode.BadRequest, "Validation error.");
                 _response.Payload = new { validationResult.Errors };
                 return _response;
+            }
+
+            if (!await _repository.ExistDepartment(employeeUpdate.DepartmentId) ||
+                !await _repository.ExistIdentificationType(employeeUpdate.IdentificationTypeId))
+            {
+                return _response.FailedResponse(HttpStatusCode.BadRequest, "Department or IdentificationType does not exist.");
             }
 
             _mapper.Map(employeeUpdate, employeeToUpdate);

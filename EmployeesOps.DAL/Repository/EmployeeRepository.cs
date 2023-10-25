@@ -76,5 +76,15 @@ namespace EmployeesOps.DAL.Repository
 
             return affectedRows;
         }
+
+        public async Task<bool> ExistDepartment(int id)
+        {
+            return await _mainDbContext.Department.AnyAsync(d => d.Id == id);
+        }
+
+        public async Task<bool> ExistIdentificationType(int id)
+        {
+            return await _mainDbContext.IdentificationTypes.AnyAsync(d => d.Id == id);
+        }
     }
 }
