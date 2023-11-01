@@ -6,10 +6,8 @@ using EmployeesOps.BLL.Validators;
 using EmployeesOps.DAL;
 using EmployeesOps.DAL.Repository;
 using EmployeesOps.DAL.Repository.IRepositories;
-using EmployeesOps.DAL.Utils;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace EmployeesOps.Configurations
 {

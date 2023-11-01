@@ -61,7 +61,7 @@ namespace EmployeesOps.DAL.Migrations
                         {
                             Id = 1001,
                             CreatedBy = "Dataseed",
-                            CreationDate = new DateTime(2023, 10, 22, 23, 37, 50, 242, DateTimeKind.Local).AddTicks(7737),
+                            CreationDate = new DateTime(2023, 10, 31, 23, 6, 57, 8, DateTimeKind.Local).AddTicks(6147),
                             IsDeleted = false,
                             Name = "IT Department"
                         },
@@ -69,7 +69,7 @@ namespace EmployeesOps.DAL.Migrations
                         {
                             Id = 1002,
                             CreatedBy = "Dataseed",
-                            CreationDate = new DateTime(2023, 10, 22, 23, 37, 50, 242, DateTimeKind.Local).AddTicks(7748),
+                            CreationDate = new DateTime(2023, 10, 31, 23, 6, 57, 8, DateTimeKind.Local).AddTicks(6157),
                             IsDeleted = false,
                             Name = "Sales Department"
                         },
@@ -77,7 +77,7 @@ namespace EmployeesOps.DAL.Migrations
                         {
                             Id = 1003,
                             CreatedBy = "Dataseed",
-                            CreationDate = new DateTime(2023, 10, 22, 23, 37, 50, 242, DateTimeKind.Local).AddTicks(7749),
+                            CreationDate = new DateTime(2023, 10, 31, 23, 6, 57, 8, DateTimeKind.Local).AddTicks(6158),
                             IsDeleted = false,
                             Name = "HHRR Department"
                         });
@@ -184,7 +184,7 @@ namespace EmployeesOps.DAL.Migrations
                         {
                             Id = 1,
                             CreatedBy = "Dataseed",
-                            CreationDate = new DateTime(2023, 10, 22, 23, 37, 50, 242, DateTimeKind.Local).AddTicks(8325),
+                            CreationDate = new DateTime(2023, 10, 31, 23, 6, 57, 8, DateTimeKind.Local).AddTicks(8553),
                             Description = "Cedula",
                             IsDeleted = false
                         },
@@ -192,7 +192,7 @@ namespace EmployeesOps.DAL.Migrations
                         {
                             Id = 2,
                             CreatedBy = "Dataseed",
-                            CreationDate = new DateTime(2023, 10, 22, 23, 37, 50, 242, DateTimeKind.Local).AddTicks(8327),
+                            CreationDate = new DateTime(2023, 10, 31, 23, 6, 57, 8, DateTimeKind.Local).AddTicks(8556),
                             Description = "SocialId",
                             IsDeleted = false
                         },
@@ -200,7 +200,7 @@ namespace EmployeesOps.DAL.Migrations
                         {
                             Id = 3,
                             CreatedBy = "Dataseed",
-                            CreationDate = new DateTime(2023, 10, 22, 23, 37, 50, 242, DateTimeKind.Local).AddTicks(8328),
+                            CreationDate = new DateTime(2023, 10, 31, 23, 6, 57, 8, DateTimeKind.Local).AddTicks(8557),
                             Description = "Passport",
                             IsDeleted = false
                         });

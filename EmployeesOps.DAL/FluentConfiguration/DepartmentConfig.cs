@@ -17,11 +17,6 @@ namespace EmployeesOps.DAL.FluentConfiguration
 
             builder.Property(x => x.Name).IsRequired().HasMaxLength(30);
 
-            builder.HasMany(x => x.Employees)
-                .WithOne(x => x.Department)
-                .HasForeignKey(x => x.DepartmentId)
-                .OnDelete(DeleteBehavior.NoAction);
-
             builder.HasData(
                 new Department { Id = 1001, Name = "IT Department", CreatedBy = "Dataseed" },
                 new Department { Id = 1002, Name = "Sales Department" , CreatedBy = "Dataseed" },

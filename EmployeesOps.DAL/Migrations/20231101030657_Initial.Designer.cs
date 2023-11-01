@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmployeesOps.DAL.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20231023032510_FixRelationShip")]
-    partial class FixRelationShip
+    [Migration("20231101030657_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,7 +64,7 @@ namespace EmployeesOps.DAL.Migrations
                         {
                             Id = 1001,
                             CreatedBy = "Dataseed",
-                            CreationDate = new DateTime(2023, 10, 22, 23, 25, 10, 200, DateTimeKind.Local).AddTicks(3388),
+                            CreationDate = new DateTime(2023, 10, 31, 23, 6, 57, 8, DateTimeKind.Local).AddTicks(6147),
                             IsDeleted = false,
                             Name = "IT Department"
                         },
@@ -72,7 +72,7 @@ namespace EmployeesOps.DAL.Migrations
                         {
                             Id = 1002,
                             CreatedBy = "Dataseed",
-                            CreationDate = new DateTime(2023, 10, 22, 23, 25, 10, 200, DateTimeKind.Local).AddTicks(3398),
+                            CreationDate = new DateTime(2023, 10, 31, 23, 6, 57, 8, DateTimeKind.Local).AddTicks(6157),
                             IsDeleted = false,
                             Name = "Sales Department"
                         },
@@ -80,7 +80,7 @@ namespace EmployeesOps.DAL.Migrations
                         {
                             Id = 1003,
                             CreatedBy = "Dataseed",
-                            CreationDate = new DateTime(2023, 10, 22, 23, 25, 10, 200, DateTimeKind.Local).AddTicks(3399),
+                            CreationDate = new DateTime(2023, 10, 31, 23, 6, 57, 8, DateTimeKind.Local).AddTicks(6158),
                             IsDeleted = false,
                             Name = "HHRR Department"
                         });
@@ -90,8 +90,7 @@ namespace EmployeesOps.DAL.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("NEWSEQUENTIALID()");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
@@ -188,7 +187,7 @@ namespace EmployeesOps.DAL.Migrations
                         {
                             Id = 1,
                             CreatedBy = "Dataseed",
-                            CreationDate = new DateTime(2023, 10, 22, 23, 25, 10, 200, DateTimeKind.Local).AddTicks(3980),
+                            CreationDate = new DateTime(2023, 10, 31, 23, 6, 57, 8, DateTimeKind.Local).AddTicks(8553),
                             Description = "Cedula",
                             IsDeleted = false
                         },
@@ -196,7 +195,7 @@ namespace EmployeesOps.DAL.Migrations
                         {
                             Id = 2,
                             CreatedBy = "Dataseed",
-                            CreationDate = new DateTime(2023, 10, 22, 23, 25, 10, 200, DateTimeKind.Local).AddTicks(3981),
+                            CreationDate = new DateTime(2023, 10, 31, 23, 6, 57, 8, DateTimeKind.Local).AddTicks(8556),
                             Description = "SocialId",
                             IsDeleted = false
                         },
@@ -204,7 +203,7 @@ namespace EmployeesOps.DAL.Migrations
                         {
                             Id = 3,
                             CreatedBy = "Dataseed",
-                            CreationDate = new DateTime(2023, 10, 22, 23, 25, 10, 200, DateTimeKind.Local).AddTicks(3982),
+                            CreationDate = new DateTime(2023, 10, 31, 23, 6, 57, 8, DateTimeKind.Local).AddTicks(8557),
                             Description = "Passport",
                             IsDeleted = false
                         });

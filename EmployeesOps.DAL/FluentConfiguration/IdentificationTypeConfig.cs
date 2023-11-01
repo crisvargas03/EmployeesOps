@@ -17,11 +17,6 @@ namespace EmployeesOps.DAL.FluentConfiguration
 
             builder.Property(x => x.Description).IsRequired().HasMaxLength(30);
 
-            builder.HasMany(x => x.Employees)
-                .WithOne(x => x.IdentificationType)
-                .HasForeignKey(x => x.IdentificationTypeId)
-                .OnDelete(DeleteBehavior.NoAction);
-
             builder.HasData(
                 new IdentificationType { Id = 1, Description = "Cedula", CreatedBy = "Dataseed" },
                 new IdentificationType { Id = 2, Description = "SocialId", CreatedBy = "Dataseed" },

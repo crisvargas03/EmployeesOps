@@ -1,5 +1,4 @@
-﻿using EmployeesOps.DAL.FluentConfiguration;
-using EmployeesOps.DAL.Models;
+﻿using EmployeesOps.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -21,8 +20,10 @@ namespace EmployeesOps.DAL
             base.OnModelCreating(modelBuilder);
             var assembly = Assembly.GetExecutingAssembly();
             var entitiesConfigs = assembly.GetTypes()
-                .Where(t => t.Namespace == "EmployeesOps.DAL.FluentConfiguration" && 
-                typeof(IEntityTypeConfiguration<>).IsAssignableFrom(t));
+                .Where(t => t.Namespace == "EmployeesOps.DAL.FluentConfiguration"
+                && t.GetInterfaces().Any(i => i.IsGenericType 
+                    && i.GetGenericTypeDefinition() == typeof(IEntityTypeConfiguration<>))
+                ).ToList();
 
             foreach (var entityConfig in entitiesConfigs)
             {
