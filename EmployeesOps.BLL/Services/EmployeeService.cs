@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
 using EmployeesOps.BLL.Dtos;
-using EmployeesOps.BLL.Helpers;
 using EmployeesOps.BLL.Interfaces;
 using EmployeesOps.DAL.Models;
 using EmployeesOps.DAL.Repository.IRepositories;
 using EmployeesOps.DAL.Utils;
 using FluentValidation;
-using System;
 using System.Net;
 
 namespace EmployeesOps.BLL.Services

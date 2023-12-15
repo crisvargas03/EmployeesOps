@@ -17,7 +17,10 @@ namespace EmployeesOps.Configurations
         {
             services.AddDbContext<MainDbContext>(op =>
             {
-                op.UseSqlServer(configuration.GetConnectionString("MainDB"));
+                var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
+                           ?? configuration.GetConnectionString("MainDB");
+
+                op.UseSqlServer(connectionString);
             });
         }
 
